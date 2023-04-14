@@ -66,10 +66,9 @@ fun apresentacao(){
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
         )
         Text(
-            text = "Custom:",
+            text = "Custom (%):",
             style = MaterialTheme.typography.subtitle1
         )
-        //slide
         var sliderPosition by remember { mutableStateOf(0f) }
         Column {
             Text(text = sliderPosition.toString())
@@ -85,6 +84,40 @@ fun apresentacao(){
                 )
         }
 
+        Text(
+            text = "15%",
+            style = MaterialTheme.typography.subtitle1
+        )
+        Text(
+            text = "Tip",
+            style = MaterialTheme.typography.subtitle1
+        )
+        OutlinedTextField(
+            value = amount.value,
+            onValueChange = {
+                amount.value = it //15tip
+            },
+        )
+        Text(
+            text = "Total",
+            style = MaterialTheme.typography.subtitle1
+        )
+        OutlinedTextField(
+            value = amount.value,
+            onValueChange = {
+                amount.value = it //total+15tip
+            },
+        )
+        Text(
+            text = "value" + "%",
+            style = MaterialTheme.typography.subtitle1
+        )
+        OutlinedTextField(
+            value = amount.value,
+            onValueChange = {
+                amount.value = it //total+%tip
+            },
+        )
 
     }
 
