@@ -7,14 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.avaliacaogorjeta.ui.theme.AvaliacaoGorjetaTheme
@@ -72,8 +69,29 @@ fun apresentacao(){
             text = "Custom:",
             style = MaterialTheme.typography.subtitle1
         )
+        //slide
+        var sliderPosition by remember { mutableStateOf(0f) }
+        Column {
+            Text(text = sliderPosition.toString())
+            Slider(
+                modifier = Modifier.semantics { contentDescription = "Localized Description" },
+                value = sliderPosition,
+                onValueChange = {
+                    sliderPosition = it
+                    //calcular gorjeta
+                                },
+                valueRange = 0f..30f,
+                steps = 1,
+                )
+        }
+
 
     }
+
+}
+
+@Composable
+fun Thumb(interactionSource: Any, thumbSize: Any) {
 
 }
 
