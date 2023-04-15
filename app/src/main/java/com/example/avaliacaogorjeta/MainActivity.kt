@@ -15,6 +15,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.avaliacaogorjeta.ui.theme.AvaliacaoGorjetaTheme
+import kotlin.math.roundToInt
 
 
 class MainActivity : ComponentActivity() {
@@ -76,7 +77,7 @@ fun apresentacao(){
                 modifier = Modifier.semantics { contentDescription = "Localized Description" },
                 value = sliderPosition,
                 onValueChange = {
-                    sliderPosition = it
+                    sliderPosition = it.roundToInt().toFloat()
                     //calcular gorjeta
                                 },
                 valueRange = 0f..30f,
