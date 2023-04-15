@@ -1,1 +1,1 @@
-# Avalia-o-Mobile---Gorjeta-
+mobile class - tip calc
