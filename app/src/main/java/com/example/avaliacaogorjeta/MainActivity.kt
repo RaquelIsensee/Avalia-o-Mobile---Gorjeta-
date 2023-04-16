@@ -32,37 +32,41 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AvaliacaoGorjetaTheme {
-        Greeting("Android")
-    }
-}
 
 @Composable
 fun apresentacao(){
     val amount = remember {
         mutableStateOf("")
     }
+
+    val total15 = remember {
+        mutableStateOf("")
+    }
+
+    val total = remember {
+        mutableStateOf("")
+    }
+    val tip15 = remember {
+        mutableStateOf("")
+    }
+    val customTip = remember {
+        mutableStateOf("")
+    }
+    var sliderPosition by remember { mutableStateOf(18.toFloat()) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Text(
-            text = "Amount",
-            style = MaterialTheme.typography.subtitle1
-        )
-
         OutlinedTextField(
+            label = {Text(text= "Amount")},
             value = amount.value,
             onValueChange = {
                 amount.value = it
+                total15.value = (it.toFloat() * 0.15 + it.toFloat()).toString()
+                tip15.value = (it.toFloat() * 0.15).toString()
+                customTip.value= calcCustomTip(amount.value.toFloat(), sliderPosition).toString()
+                total.value=calcTotalCustomTip(amount.value.toFloat(), sliderPosition).toString()
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
         )
@@ -70,7 +74,6 @@ fun apresentacao(){
             text = "Custom (%):",
             style = MaterialTheme.typography.subtitle1
         )
-        var sliderPosition by remember { mutableStateOf(0f) }
         Column {
             Text(text = sliderPosition.toString())
             Slider(
@@ -78,55 +81,57 @@ fun apresentacao(){
                 value = sliderPosition,
                 onValueChange = {
                     sliderPosition = it.roundToInt().toFloat()
-                    //calcular gorjeta
-                                },
+                    customTip.value= calcCustomTip(amount.value.toFloat(), sliderPosition).toString()
+                    total.value=calcTotalCustomTip(amount.value.toFloat(), sliderPosition).toString()
+                },
                 valueRange = 0f..30f,
-                steps = 1,
+                steps = 30,
                 )
         }
 
-        Text(
-            text = "15%",
-            style = MaterialTheme.typography.subtitle1
-        )
-        Text(
-            text = "Tip",
-            style = MaterialTheme.typography.subtitle1
+        OutlinedTextField(
+            value = tip15.value,
+            onValueChange = {
+                tip15.value = it //total+15tip
+            },
+            readOnly = true,
+            label = {Text(text= "15% Tip")}
         )
         OutlinedTextField(
-            value = amount.value,
+            value = total15.value,
             onValueChange = {
-                amount.value = it //15tip
+                total15.value = it //total+15tip
             },
-        )
-        Text(
-            text = "Total",
-            style = MaterialTheme.typography.subtitle1
+            readOnly = true,
+            label = {Text(text= "Total 15% Tip")}
         )
         OutlinedTextField(
-            value = amount.value,
+            label = {Text(text= sliderPosition.toString() + "% Tip")},
+            value = customTip.value,
             onValueChange = {
-                amount.value = it //total+15tip
+                customTip.value = it //total+%tip
             },
+            readOnly = true,
         )
-        Text(
-            text = "value" + "%",
-            style = MaterialTheme.typography.subtitle1
-        )
+
         OutlinedTextField(
-            value = amount.value,
+            label = {Text(text= "Total " + sliderPosition.toString() + "% Tip")},
+            value = total.value,
             onValueChange = {
-                amount.value = it //total+%tip
+                total.value = it //total+%tip
             },
-        )
+            readOnly = true,
+            )
 
     }
 
 }
 
-@Composable
-fun Thumb(interactionSource: Any, thumbSize: Any) {
-
+fun calcCustomTip(amount: Float, customTip: Float): Float {
+    return (amount * customTip /100)
+}
+fun calcTotalCustomTip(amount: Float, customTip: Float): Float{
+    return ((amount * customTip /100) + amount)
 }
 
 
